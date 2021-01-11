@@ -1,5 +1,4 @@
-﻿
-namespace Sales.Services
+﻿namespace Sales.Services
 {
     using System;
     using System.Collections.Generic;
@@ -10,24 +9,24 @@ namespace Sales.Services
     using Sales.Common.Models;
     public class ApiService
     {
-        public async Task<Response> GetList<T>(string urlBase, string prefix, string controller)
+        public async Task<Response> GetList<T>(string urlBase, string prefix, string controller) // Dirección Base
         {
             try
             {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(urlBase);
-                var url = $"{prefix}{controller}";
-                var response = await client.GetAsync(url);
-                string answer = await response.Content.ReadAsStringAsync();
-                if(!response.IsSuccessStatusCode)
+                var client = new HttpClient();      //Carga la dirección
+                client.BaseAddress = new Uri(urlBase);      //carga la URL Base
+                var url = $"{prefix}{controller}";      //Concatena            
+                var response = await client.GetAsync(url);      //Asigna el getAsync, lee la respuesta
+                string answer = await response.Content.ReadAsStringAsync(); //Lee la respuesta
+                if(!response.IsSuccessStatusCode)  //Si se presenan fallos
                 {
                     return new Response
                     {
-                        IsSuccess = false,
+                        IsSuccess = false,  //Asigna False al valor IsSuccess
                         Message = answer,
                     };
                 }
-                var list = JsonConvert.DeserializeObject<List<T>>(answer);
+                var list = JsonConvert.DeserializeObject<List<T>>(answer); //Convierte la respuesta de Json en una lista
                 return new Response
                 {
                     IsSuccess = true,
